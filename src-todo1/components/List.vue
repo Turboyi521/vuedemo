@@ -1,16 +1,14 @@
 <template>
   <ul class="todo-main">
-    <Item v-for="(todo,index) in todos" :key="index" :todo="todo"  :index="index"/>
+    <Item v-for="(todo,index) in todos" :key="index" :todo="todo" :index="index"/>
 
 
   </ul>
 </template>
-
-
 <script>
   import Item from './Item.vue'
   export default {
-     props:['todos', ],//props简单写法，接收到的属性名称
+     props:['todos','deleteTodo'],//props简单写法，接收到的属性名称
      components:{
        Item
      },

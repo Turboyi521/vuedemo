@@ -1,8 +1,8 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-      <TodoHeader @addTodo="addTodo"/>
-      <TodoList :todos="todos"  />
+      <TodoHeader :addTodo="addTodo"/>
+      <TodoList :todos="todos" :deleteTodo="deleteTodo"/>
       <TodoFooter :todos="todos"
                     :deleteCompleteTodos="deleteCompleteTodos"
                     :selectAllTodos="selectAllTodos"
@@ -13,7 +13,6 @@
   </div>
 </template>
 <script>
-  import Pubsub from 'pubsub-js'
   import Header from './components/Header.vue'
   import List from './components/List.vue'
   import Footer from './components/Footer.vue'
@@ -24,11 +23,6 @@
 //        todos:JSON.parse(localStorage.getItem('todos_key') || '[]')
         todos: storageUtils.readTodos()
       }
-    },
-    mounted(){
-      Pubsub.subscribe('deleteTodo',(msg,index) => {
-        this.deleteTodo(index)
-      })
     },
     methods:{
       addTodo(todo){
