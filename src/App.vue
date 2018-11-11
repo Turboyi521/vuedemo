@@ -3,12 +3,12 @@
     <div class="todo-wrap">
       <TodoHeader @addTodo="addTodo"/>
       <TodoList :todos="todos"  />
-      <TodoFooter :todos="todos"
-                    :deleteCompleteTodos="deleteCompleteTodos"
-                    :selectAllTodos="selectAllTodos"
+      <TodoFooter>
+        <input type="checkbox" v-model="isCheckAll" slot="check"/>
+        <span slot="size">已完成{{completeSize}}</span> / 全部{{todos.length}}
+        <button class="btn btn-danger" v-show="completeSize >0" @click="deleteCompleteTodos" slot="delete">清除已完成任务</button>
 
-
-          />
+      </TodoFooter>
     </div>
   </div>
 </template>
@@ -23,6 +23,21 @@
       return{
 //        todos:JSON.parse(localStorage.getItem('todos_key') || '[]')
         todos: storageUtils.readTodos()
+      }
+    },
+    computed:{
+      //完成
+      completeSize () {
+        return this.todos.reduce((pre,todo) => pre + (todo.complete ? 1 : 0),0)
+      },
+      //是否全选，同时修改
+      isCheckAll:{
+        get(){
+          return this.todos.length === this.completeSize && this.completeSize>0
+        },
+        set(value){
+          this.selectAllTodos(value)
+        }
       }
     },
     mounted(){
